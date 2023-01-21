@@ -3,7 +3,7 @@
 #           You should be viewing the app "front page" and run this script, then watch
 #              the visualization
 
-usage() { echo "$0 {up|down}"; exit 9; }
+usage() { echo "$0 {up|down|current}"; exit 9; }
 if  [ $# -ne 1 ]; then usage; fi 
 ACTION=$1
 DEPLOYMENTS="ecsdemo-frontend ecsdemo-crystal ecsdemo-nodejs"
