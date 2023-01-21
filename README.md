@@ -51,6 +51,9 @@ The following contains the procedure to create either an Amazon Linux 2 (AL2) or
 [Create a Managed Node Group](./Create_Managed_NodeGroup.md)
 
 ## Deploy Visualization Demo App
+This app is really cool.  It provides a "visual representation" of where the 3-tiers of pods are running.
+
+[Deploy Demo Visualization App - 3-tier](./Deploy_Demo_Visualization_App.md)
 
 ## Deploy Pipeline Demo App
 
