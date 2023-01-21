@@ -27,10 +27,19 @@ Some cool advantages:
 * You only pay for what you use. (Cloud9 will shutdown after use, and then spin back up when you need it later)
 
 [Create your Cloud9 Environment](Create_Cloud9_Environment.md)  
+
+Source Environment Variables for this Code Demo
+``` 
+curl -o variables.txt https://raw.githubusercontent.com/KnowBetterCloud/codedemo/main/Files/variables.txt
+. ./variables.txt
+```
 Run through the [Install Tools](Install_Tools.md) doc  
 [Modify IAM settings for your Workspace](./Modify_IAM_Settings.md)
 
 ## Create EKS Cluster
+
+### But first, create a VPC
+[Create a VPC with 3 x AZ and Private Subnets](./Create_3AZ-VPC_Private_Subnets.md)
 
 
 ## Deploy Visualization Demo App
