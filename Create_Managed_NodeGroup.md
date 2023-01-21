@@ -1,16 +1,18 @@
 # Create a Managed NodeGroup 
 
 
+## You don't need to do this.  Unless you're *real* curious, like me.
 ```
 MY_REGION=us-east-1
-aws ec2 create-key-pair --region $MY_REGION --key-name mrmeeseeks --query 'KeyMaterial' --output text > MrMeeSeEKS.pem
- aws ec2 describe-key-pairs --key-name mrmeeseeks
+aws ec2 create-key-pair --region $MY_REGION --key-name $APP_NAME --query 'KeyMaterial' --output text > $APP_NAME.pem
+aws ec2 describe-key-pairs --key-name $APP_NAME 
 
 ```
 
+## Amazon Linux 2 (AL2) AMI
 ```
 eksctl create nodegroup \
-  --cluster mrmeeseeks \
+  --cluster $MY_EKS_CLUSTER \
   --region $MY_REGION \
   --name my-mng-al2 \
   --node-ami-family AmazonLinux2 \
@@ -19,7 +21,7 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key mrmeeseeks \
+  --ssh-public-key $APP_NAME \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
@@ -28,9 +30,10 @@ eksctl create nodegroup \
 
 ```
 
+## Bottlerocket AMI
 ```
 eksctl create nodegroup \
-  --cluster mrmeeseeks \
+  --cluster $MY_EKS_CLUSTER \
   --region $MY_REGION \
   --name my-mng-bottlerocket \
   --node-ami-family Bottlerocket \
@@ -39,10 +42,17 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key mrmeeseeks \
+  --ssh-public-key $APP_NAME \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
   --managed \
   --node-private-networking
+```
+
+## Some status reporting
+```
+kubectl get nodes -o wide
+aws eks list-nodegroups --cluster-name $MY_EKS_CLUSTER
+eksctl get nodegroup --cluster $MY_EKS_CLUSTER
 ```

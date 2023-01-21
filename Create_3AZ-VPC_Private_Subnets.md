@@ -26,7 +26,7 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
   --region ${MY_REGION}
 ```
 
-# So.... I can't figure out how to pass a $VARIABLE in to the following command
+So.... I can't figure out how to pass a $VARIABLE in to the following command
 ```
 aws cloudformation list-stacks --query 'StackSummaries[?starts_with(StackName, `codedemo`)].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)'
 

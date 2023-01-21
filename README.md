@@ -41,6 +41,14 @@ Run through the [Install Tools](Install_Tools.md) doc
 ### But first, create a VPC
 [Create a VPC with 3 x AZ and Private Subnets](./Create_3AZ-VPC_Private_Subnets.md)
 
+### Create the Cluster
+
+[Create an EKS Cluster](./Create_EKS_Cluster.md)
+
+### Create a Managed Node Group
+The following contains the procedure to create either an Amazon Linux 2 (AL2) or Bottlerocket Managed Node Group
+
+[Create a Managed Node Group](./Create_Managed_NodeGroup.md)
 
 ## Deploy Visualization Demo App
 
