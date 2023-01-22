@@ -76,8 +76,7 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
   --parameters file://${STACK_PARAMETERS} \
   --region $MY_REGION
 
-#  Need to figure out how to pass a var in to the following command/query - $APP_NAME, for example
-ECR_URL=$(aws ecr describe-repositories  --query 'repositories[?contains(repositoryUri,`codedemo`)].{repositoryUri:repositoryUri}' --output text --no-cli-pager )
+ECR_URL=$(aws ecr describe-repositories  --query "repositories[?contains(repositoryUri,'${PROJECT}')].{repositoryUri:repositoryUri}" --output text --no-cli-pager )
 ECR_URL_BASE=$(echo $ECR_URL  | grep codedemo | cut -f1 -d\/  )
 echo "ECR_URL= $ECR_URL"
 echo "ECR_URL_BASE= $ECR_URL_BASE"
@@ -90,7 +89,6 @@ NOTE:  This expect GNU-sed (MacOS sed will not work)
 ```
 sed -i -e "s/509501787486.dkr.ecr.us-east-2.amazonaws.com/$ECR_URL_BASE/g" $(find . -name values.dev.yaml)
 ```
-
 
 CFN Template to deploy CodePipeline to build Docker Image of java application and push to ECR and deploy to EKS
 ```
@@ -146,7 +144,7 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
 
 # Confirm kubeconfig is able to query for cluster
 ```
-$(eksctl get clusters) || { aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${REGION}; }
+$(eksctl get clusters) || { aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${MY_REGION}; }
 aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text
 
 bash $(find . -name kube_aws_auth_configmap_patch.sh) $(aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text)
@@ -194,12 +192,10 @@ docker push $ECR_URL/$IMAGE_TAG
 docker push $ECR_URL:latest }
 ```
 
-### RANDOM BITS
+### RANDOM BITS and COMMANDS
 aws eks list-clusters --query "clusters[]" --output text --no-cli-pager
 aws codecommit list-repositories --query "repositories[].repositoryName" --output=text
-
 aws cloudformation --region=us-east-1 describe-stacks --query "Stacks[?StackName=='codedemo-20231015-pipeline'].Outputs[0].OutputValue" --output text
-
 
 ## Customize your code
 ### So, there is an version1/app_code dir that contains an app_code.zip

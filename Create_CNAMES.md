@@ -6,16 +6,39 @@ STATUS:  Work in progress - 2023-01-21
 
 ## Visualization Demo App
 Assuming the following is already exported as ENV variables
-APP_NAME=visualization
 PROJECT=codedemo
 PARENT_DOMAIN=clouditoutlout.com
 PROJECT_DOMAIN=$PROJECT.$PARENT_DOMAIN
 APP_HOSTNAME="$APP_NAME.$PROJECT_DOMAIN"  
 
-Get the hostname for the Visualization Load Balancer
+Get the Hosted Zone Id for the Project Domain
 ```
-kubectl  get svc ecsdemo-frontend -o json | jq .status.loadBalancer.ingress[0].hostname
+export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name |  jq --arg name "$PROJECT_DOMAIN." -r '.HostedZones | .[] | select(.Name=="\($name)") | .Id' )
 ```
 
+Pull down the CNAME template
 ```
-kubectl  get svc aws-proserve-java-greeting-dev  -o json | jq .status.loadBalancer.ingress[0].hostname
+curl -o cname_template.json https://raw.githubusercontent.com/KnowBetterCloud/codedemo/main/Files/cname_template.json
+```
+
+## Create CNAME for Visualization Load Balancer
+* Get the hostname for the ELB
+* replace values in the json template
+* create cname
+```
+export APP_NAME=ecsdemo-frontend 
+export APP_ELB=$(kubectl get svc $APP_NAME -o json | jq .status.loadBalancer.ingress[0].hostname | sed 's/"//g') 
+echo -e "Adding \n CNAME: $APP_NAME \n to DOMAIN: $PROJECT_DOMAIN \n for ELB: $APP_ELB \n New Record: $APP_NAME.$PROJECT_DOMAIN"
+envsubst < cname_template.json > cname_$APP_NAME.json
+aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_$APP_NAME.json 
+hange-config.json
+echo "Web Page for App: $APP_NAME.$PROJECT_DOMAIN/hello/"
+```
+
+## Create NAME for Java App Load Balancer
+```
+export APP_NAME=aws-proserve-java-greeting-dev
+export APP_ELB=$(kubectl get svc $APP_NAME -o json | jq .status.loadBalancer.ingress[0].hostname | sed 's/"//g') 
+echo -e "Adding \n CNAME: $APP_NAME \n to DOMAIN: $PROJECT_DOMAIN \n for ELB: $APP_ELB \n New Record: $APP_NAME.$PROJECT_DOMAIN"
+aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_$APP_NAME.json 
+```

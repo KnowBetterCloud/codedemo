@@ -7,25 +7,38 @@ At the highest-level, this repo will guide you through:
 * Deploy a Demo App (crystal, node-js) that provides a visual outlook of how pods run on several nodes (and in several Availability Zones)
 * Deploy a Java App by building a Software Pipeline using AWS Developer Tools
 
+## Notes, Caveats, Warnings
+This "project" is to deploy a single EKS cluster and a few apps.  If you are using an existing AWS account, you may have a different experience.  
+I tried to make the code retrieve data specific to the project we are working with (codedemo, in this case), but it may not "filter" adequetely 
+if there happens to be lots of other resources in your account.
+
+This code was not created to be:
+
+* extremely efficient
+* idempotent
+* used in/for Production workloads
+
+it is *intentionally* inefficient, overly-verbose, and essentially non-scriptable for a reason - so that you have to cut-and-paste the code, see what it is doing, etc...
+
 ## Demo Information
 Here is a list of "variables" and their values that I will use throughout this particular demo.
 
 I will create/maintain a file to "source" with all the variables I need.
 
-| Variable       | Value                 |
-|:---------------|:----------------------|
-| APP_NAME       | {ecsdemo-frontend|aws-proserve-java-greeting-dev} |
-| PROJECT        | codedemo |
-| PROJECT        | \$APP_NAME+\`date +%F\` <br> ex. codedemo-2023-01-20 |
-| PARENT_DOMAIN  | clouditoutloud.com |
-| PROJECT_DOMAIN | $APP_NAME.$PARENT_DOMAIN <br> ex. codedemo.clouditoutloud.com |
+| Variable       | Purpose                                | Value                   | 
+|:---------------|:---------------------------------------|:------|
+| APP_NAME       | Represent the app being deployed       | ecsdemo-frontend <BR> aws-proserve-java-greeting-dev |
+| PROJECT        | Name of this "project"                 | codedemo |
+| PARENT_DOMAIN  | Top Level Domain (TLD)                 | clouditoutloud.com |
+| PROJECT_DOMAIN | Domain specifically for *this* project | $PROJECT.$PARENT_DOMAIN <br> ex. codedemo.clouditoutloud.com |
+| PROJECT (old)  | original way before I updated          | \$APP_NAME+\`date +%F\` <br> ex. codedemo-2023-01-20 |
 
 ## Create Cloud9 Environment
 [AWS Cloud9](https://aws.amazon.com/cloud9/) is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. 
 Some cool advantages:
 * Cloud9 integrates with AWS Services
 * You don't need to manage AWS Access Keys
-* You only pay for what you use. (Cloud9 will shutdown after use, and then spin back up when you need it later)
+* You only pay for what you use. (Cloud9 will "pause" after use, and then spin back up when you need it later)
 
 [Create your Cloud9 Environment](Create_Cloud9_Environment.md)  
 

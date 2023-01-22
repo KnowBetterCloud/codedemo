@@ -5,7 +5,7 @@ Browse to [AWS Cloud9](https://us-east-1.console.aws.amazon.com/cloud9control/ho
 Click on Create Environment (NOTE: this will take few minutes to spin up)
 
 Details
-- Name: codedemo
+- Name: $PROJECT (codedemo) 
 - Description - optional: Cloud9 IDE for EKS Learning
 - Environment type: New EC2 instance (default)
 
@@ -57,8 +57,11 @@ fi
 ## Create IAM Role for Workspace
 The following is a "intelligent link" that will begin the steps to create a role that will "Allows EC2 instances to call AWS services on your behalf."
 
-# NOTE:  please see the very end of the smart link - feel free to use whatever name suits you for the IAM role
-* Click on https://console.aws.amazon.com/iam/home#/roles$new?step=review&commonUseCase=EC2%2BEC2&selectedUseCase=EC2&policies=arn:aws:iam::aws:policy%2FAdministratorAccess&roleName=codedemo  
+NOTE:  please see the very end of the smart link - feel free to use whatever name suits you for the IAM role  
+It defaults to ${PROJECT}-admin (codedemo-admin)
+
+* Run this in your Cloud9 and then cut-and-paste the link in to a browser
+  * echo "https://console.aws.amazon.com/iam/home#/roles$new?step=review&commonUseCase=EC2%2BEC2&selectedUseCase=EC2&policies=arn:aws:iam::aws:policy%2FAdministratorAccess&roleName=${PROJECT}-admin"
 * Click Next: Permissions  
 * Attach permsission policies (ensure that AdministratorAccess is checked)
 * Cick Next: Tags  (I'd get in the habit of using tags)
@@ -67,7 +70,5 @@ The following is a "intelligent link" that will begin the steps to create a role
 ## Attach Role to Cloud9 Environment
 In your Cloud9 Instance, look at the upper right corner and click on your icon and select "Manage EC2 Instance"
 ![Manage EC2 Instance](images/Manage_EC2_Instance-Cloud9.png) (will open another tab)  
-Select your EC2 Instance used for Cloud9 (starts with "aws-cloud9-mrmeeseeks") and click Actions | Security | Modify IAM role and select your newly created role ("mrmeeseeks" in my case), then click "Update IAM role"
+Select your EC2 Instance used for Cloud9 (starts with "aws-cloud9-$PROJECT") and click Actions | Security | Modify IAM role and select your newly created role ("${PROJECT}-admin" in my case), then click "Update IAM role"
 ![Modify IAM role](./images/Modify_IAM_role.png)
-
-

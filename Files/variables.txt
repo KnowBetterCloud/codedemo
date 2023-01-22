@@ -1,5 +1,4 @@
-export APP_NAME="codedemo"
-export PROJECT="$APP_NAME-`date +%F`"
+export PROJECT="codedemo"
 export PARENT_DOMAIN="clouditoutloud.com"
 export PROJECT_DOMAIN="$APP_NAME.$PARENT_DOMAIN"
 export MY_REGION=us-east-1
