@@ -9,7 +9,8 @@
                 "TTL": 300,
                 "ResourceRecords": [
                     {
-                        "Value": "$APP_ELB"
+                        # double-quotes removed as ELB value has them
+                        "Value": $APP_ELB
                     }
                 ]
             }
