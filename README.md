@@ -55,7 +55,12 @@ This app is really cool.  It provides a "visual representation" of where the 3-t
 
 [Deploy Demo Visualization App - 3-tier](./Deploy_Demo_Visualization_App.md)
 
-## Deploy Pipeline Demo App
+## Deploy Software Pipeline Demo App
+[Deploy Software Pipeline Demo](./Deploy_Software_Pipeline.md)
 
+## Extra Credit - CNAMEs for your Apps
+[Create CNAME for Apps](./Create_CNAMES.md)
 
+## TODO
+I have a few things [TODO](./TODO.md)
 
