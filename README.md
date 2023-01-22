@@ -12,12 +12,13 @@ Here is a list of "variables" and their values that I will use throughout this p
 
 I will create/maintain a file to "source" with all the variables I need.
 
-| Variable      | Value                 |
-|:--------------|:----------------------|
-| APP_NAME      | codedemo |
-| PROJECT       | \$APP_NAME+\`date +%F\` <br> ex. codedemo-2023-01-20 |
-| PARENT_DOMAIN | clouditoutloud.com |
-| APP_DOMAIN    | $APP_NAME.$PARENT_DOMAIN <br> ex. codedemo.clouditoutloud.com |
+| Variable       | Value                 |
+|:---------------|:----------------------|
+| APP_NAME       | {ecsdemo-frontend|aws-proserve-java-greeting-dev} |
+| PROJECT        | codedemo |
+| PROJECT        | \$APP_NAME+\`date +%F\` <br> ex. codedemo-2023-01-20 |
+| PARENT_DOMAIN  | clouditoutloud.com |
+| PROJECT_DOMAIN | $APP_NAME.$PARENT_DOMAIN <br> ex. codedemo.clouditoutloud.com |
 
 ## Create Cloud9 Environment
 [AWS Cloud9](https://aws.amazon.com/cloud9/) is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. 
