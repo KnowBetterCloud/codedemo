@@ -9,7 +9,7 @@
                 "TTL": 300,
                 "ResourceRecords": [
                     {
-                        "Value": "$APP_NAME"
+                        "Value": "$APP_ELB"
                     }
                 ]
             }
