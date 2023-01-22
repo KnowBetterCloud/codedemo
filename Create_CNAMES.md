@@ -16,3 +16,6 @@ Get the hostname for the Visualization Load Balancer
 ```
 kubectl  get svc ecsdemo-frontend -o json | jq .status.loadBalancer.ingress[0].hostname
 ```
+
+```
+kubectl  get svc aws-proserve-java-greeting-dev  -o json | jq .status.loadBalancer.ingress[0].hostname
