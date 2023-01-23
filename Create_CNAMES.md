@@ -2,9 +2,9 @@
 
 STATUS:  
 
-* I *think* this should be complete/working now - 2023-01-23  
+* 2023-01-23 - I *think* this should be complete/working now 
          If you find that I am missing something, please let me know.
-* Work in progress - 2023-01-21  
+* 2023-01-21 - Work in progress 
   Just realized I need to clean up the way I create the vars and what 
            echo one is used for.
 
