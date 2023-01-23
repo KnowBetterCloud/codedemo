@@ -1,15 +1,21 @@
 # Create CNAME for App
 
-STATUS:  Work in progress - 2023-01-21
-         Just realized I need to clean up the way I create the vars and what 
+STATUS:  
+
+* 2023-01-23 - I *think* this should be complete/working now 
+         If you find that I am missing something, please let me know.
+* 2023-01-21 - Work in progress 
+  Just realized I need to clean up the way I create the vars and what 
            echo one is used for.
 
 ## Visualization Demo App
-Assuming the following is already exported as ENV variables
-PROJECT=codedemo
-PARENT_DOMAIN=clouditoutlout.com
+Assuming the following is already exported as ENV variables  
+```
+PROJECT=codedemo  
+PARENT_DOMAIN=clouditoutlout.com  
 PROJECT_DOMAIN=$PROJECT.$PARENT_DOMAIN
 APP_HOSTNAME="$APP_NAME.$PROJECT_DOMAIN"  
+```
 
 Get the Hosted Zone Id for the Project Domain
 ```
