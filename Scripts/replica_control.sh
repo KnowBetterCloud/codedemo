@@ -11,7 +11,7 @@ SLEEPYTIME=8
 
 for DEPLOYMENT in $DEPLOYMENTS
 do
-        echo "Deployment to scale: $DEPLOYMENT"
+        echo "Managing: $DEPLOYMENT"
         case $ACTION in
                 "down")
                         CURRENT_REPLICAS=$(kubectl get deployment $DEPLOYMENT -o=jsonpath='{.status.replicas}')
