@@ -32,6 +32,13 @@ I will create/maintain a file to "source" with all the variables I need.
 | MY_PARENT_DOMAIN  | Top Level Domain (TLD)                 | clouditoutloud.com |
 | MY_PROJECT_DOMAIN | Domain specifically for *this* project | $MY_PROJECT.$MY_PARENT_DOMAIN <br> ex. codedemo.clouditoutloud.com |
 
+NOTE:  As annoying as seeing a bunch of variables starting with MY_ is, I *do* have a reason.  I want source the variables file, if it exists, and then be able to run 
+```
+set | grep MY_
+# or
+env | grep MY_
+```
+
 ## Create Cloud9 Environment
 [AWS Cloud9](https://aws.amazon.com/cloud9/) is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. 
 Some cool advantages:
