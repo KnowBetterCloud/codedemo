@@ -3,9 +3,8 @@
 https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 
 ```
-MY_EKS_CLUSTER="$PROJECT"
+MY_EKS_CLUSTER="$MY_PROJECT"
 MY_REGION="us-east-1"
-MY_VERSION="1.24"
 STACK_NAME="${MY_EKS_CLUSTER}"
 ```
 
@@ -27,7 +26,7 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
 ```
 
 Check the status of the Cloudformation Stacks 
-NOTE: there will be many as all the stacks start with "$PROJECT" (codedemo)
+NOTE: there will be many as all the stacks start with "$MY_PROJECT" (codedemo)
 ```
-aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, '${PROJECT}')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"
+aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, '${MY_PROJECT}')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"
 ```

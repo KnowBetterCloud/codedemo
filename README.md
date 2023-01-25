@@ -25,13 +25,12 @@ Here is a list of "variables" and their values that I will use throughout this p
 
 I will create/maintain a file to "source" with all the variables I need.
 
-| Variable       | Purpose                                | Value                   | 
-|:---------------|:---------------------------------------|:------|
-| APP_NAME       | Represent the app being deployed       | ecsdemo-frontend <BR> aws-proserve-java-greeting-dev |
-| PROJECT        | Name of this "project"                 | codedemo |
-| PARENT_DOMAIN  | Top Level Domain (TLD)                 | clouditoutloud.com |
-| PROJECT_DOMAIN | Domain specifically for *this* project | $PROJECT.$PARENT_DOMAIN <br> ex. codedemo.clouditoutloud.com |
-| PROJECT (old)  | original way before I updated          | \$APP_NAME+\`date +%F\` <br> ex. codedemo-2023-01-20 |
+| Variab le         | Purpose                                | Value                   | 
+|:------------------|:---------------------------------------|:------|
+| MY_APP_NAME       | Represent the app being deployed       | ecsdemo-frontend <BR> aws-proserve-java-greeting-dev |
+| MY_ROJECT         | Name of this "project"                 | codedemo |
+| MY_PARENT_DOMAIN  | Top Level Domain (TLD)                 | clouditoutloud.com |
+| MY_PROJECT_DOMAIN | Domain specifically for *this* project | $MY_PROJECT.$MY_PARENT_DOMAIN <br> ex. codedemo.clouditoutloud.com |
 
 ## Create Cloud9 Environment
 [AWS Cloud9](https://aws.amazon.com/cloud9/) is a cloud-based integrated development environment (IDE) that lets you write, run, and debug your code with just a browser. 
@@ -42,11 +41,15 @@ Some cool advantages:
 
 [Create your Cloud9 Environment](Create_Cloud9_Environment.md)  
 
-Source Environment Variables for this Code Demo
+Add verbiage to Source Environment Variables for this Code Demo for your login shell
 ``` 
 curl -o variables.txt https://raw.githubusercontent.com/KnowBetterCloud/codedemo/main/Files/variables.txt
-. ./variables.txt
+echo "
+# Sourcing Project Vars
+[ -f ${HOME}/environment/variables.txt ] && . ${HOME}/environment/variables.txt"  | tee -a ${HOME}/.bashrc
+. ${HOME}/.bashrc
 ```
+
 Run through the [Install Tools](Install_Tools.md) doc  
 [Modify IAM settings for your Workspace](./Modify_IAM_Settings.md)
 

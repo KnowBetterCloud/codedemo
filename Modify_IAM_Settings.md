@@ -19,6 +19,6 @@ aws configure set default.region ${AWS_REGION}
 aws configure get default.region
 
 # If you did not source the variables file, this will fail (need to set APP_NAME=codedemo)
-aws sts get-caller-identity --query Arn | grep $APP_NAME -q && echo "IAM role valid" || echo "IAM role NOT valid"
+aws sts get-caller-identity --query Arn | grep $MY_PROJECT -q && echo "IAM role valid" || echo "IAM role NOT valid"
 ```
 

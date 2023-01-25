@@ -14,38 +14,38 @@ S3 Bucket
 ## Variables for this Demo
 ```
 . ./variables.txt
-echo "Using Project: ${PROJECT}"
+echo "Using Project: ${MY_PROJECT}"
 echo "Deployed in Region: $MY_REGION"
 ```
 
 ```
-mkdir -p ${HOME}/Projects/${PROJECT}/; cd $_
+mkdir -p ${HOME}/Projects/${MY_PROJECT}/; cd $_
 wget https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/samples/p-attach/95a5b5c2-d7fb-41eb-9089-455318c0d585/attachments/attachment.zip
 unzip attachment.zip 
 unzip java-cicd-eks-cfn.zip   
 
-aws s3 mb s3://${PROJECT}
+aws s3 mb s3://${MY_PROJECT}
 # NOTE: we need to create a folder ("Code") which will happen when we cp bits up to the bucket
 # ALSO NOTE: it is *here* you would make code changes (see bottom of this doc)
-aws s3 cp $(find . -name app_code.zip) s3://${PROJECT}/Code/   
-aws s3 ls s3://${PROJECT}/Code/
+aws s3 cp $(find . -name app_code.zip) s3://${MY_PROJECT}/Code/   
+aws s3 ls s3://${MY_PROJECT}/Code/
 ```
 
 ## Create the Stack which will create 
 #    * ECR repo
 #    * CodeCommit repo
 ```
-STACK_NAME="${PROJECT}-codecommit-ecr"
+STACK_NAME="${MY_PROJECT}-codecommit-ecr"
 STACK_PARAMETERS=${STACK_NAME}.cfn
 STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
 #######
 # Create Human-Readable "params", then parse it in to json 
 cat << EOF > ${STACK_PARAMETERS_TMP}
 CodeCommitRepositoryName              $APP_NAME	
-ECRRepositoryName	              ${PROJECT}
+ECRRepositoryName	              ${MY_PROJECT}
 CodeCommitRepositoryS3BucketObjKey    Code/app_code.zip
 CodeCommitRepositoryBranchName	      master	
-CodeCommitRepositoryS3Bucket	      ${PROJECT}
+CodeCommitRepositoryS3Bucket	      ${MY_PROJECT}
 EOF
 
 grep -v ^# $STACK_PARAMETERS_TMP | while read ParameterKey ParameterValue DUMMY; do echo -e "  {\n    \"ParameterKey\": \"${ParameterKey}\",\n    \"ParameterValue\": \"${ParameterValue}\"\n  },"; done > ${STACK_PARAMETERS}
@@ -76,7 +76,7 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
   --parameters file://${STACK_PARAMETERS} \
   --region $MY_REGION
 
-ECR_URL=$(aws ecr describe-repositories  --query "repositories[?contains(repositoryUri,'${PROJECT}')].{repositoryUri:repositoryUri}" --output text --no-cli-pager )
+ECR_URL=$(aws ecr describe-repositories  --query "repositories[?contains(repositoryUri,'${MY_PROJECT}')].{repositoryUri:repositoryUri}" --output text --no-cli-pager )
 ECR_URL_BASE=$(echo $ECR_URL  | grep codedemo | cut -f1 -d\/  )
 echo "ECR_URL= $ECR_URL"
 echo "ECR_URL_BASE= $ECR_URL_BASE"
@@ -92,7 +92,7 @@ sed -i -e "s/509501787486.dkr.ecr.us-east-2.amazonaws.com/$ECR_URL_BASE/g" $(fin
 
 CFN Template to deploy CodePipeline to build Docker Image of java application and push to ECR and deploy to EKS
 ```
-STACK_NAME="${PROJECT}-codepipeline"
+STACK_NAME="${MY_PROJECT}-codepipeline"
 STACK_PARAMETERS=${STACK_NAME}.cfn
 STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
 ```
@@ -103,7 +103,7 @@ STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
 EKS_CLUSTER_NAME=codedemo
 cat << EOF > ${STACK_PARAMETERS_TMP}
 EKSCodeBuildAppName	aws-proserve-java-greeting
-EcrDockerRepository	${PROJECT}
+EcrDockerRepository	${MY_PROJECT}
 SourceRepoName ${APP_NAME}
 CodeBranchName	master
 EKSClusterName	$EKS_CLUSTER_NAME
@@ -145,9 +145,9 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
 # Confirm kubeconfig is able to query for cluster
 ```
 $(eksctl get clusters) || { aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${MY_REGION}; }
-aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text
+aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${MY_PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text
 
-bash $(find . -name kube_aws_auth_configmap_patch.sh) $(aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text)
+bash $(find . -name kube_aws_auth_configmap_patch.sh) $(aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${MY_PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text)
 ```
 
 ## Update Code 

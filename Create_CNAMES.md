@@ -11,15 +11,15 @@ STATUS:
 ## Visualization Demo App
 Assuming the following is already exported as ENV variables  
 ```
-PROJECT=codedemo  
-PARENT_DOMAIN=clouditoutlout.com  
-PROJECT_DOMAIN=$PROJECT.$PARENT_DOMAIN
-APP_HOSTNAME="$APP_NAME.$PROJECT_DOMAIN"  
+MY_PROJECT=codedemo  
+MY_PARENT_DOMAIN=clouditoutlout.com  
+MY_PROJECT_DOMAIN=$MY_PROJECT.$MY_PARENT_DOMAIN
+MY_APP_HOSTNAME="$APP_NAME.$MY_PROJECT_DOMAIN"  
 ```
 
 Get the Hosted Zone Id for the Project Domain
 ```
-export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name |  jq --arg name "$PROJECT_DOMAIN." -r '.HostedZones | .[] | select(.Name=="\($name)") | .Id' )
+export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name |  jq --arg name "$MY_PROJECT_DOMAIN." -r '.HostedZones | .[] | select(.Name=="\($name)") | .Id' )
 ```
 
 Pull down the CNAME template
@@ -32,19 +32,19 @@ curl -o cname_template.json https://raw.githubusercontent.com/KnowBetterCloud/co
 * replace values in the json template
 * create cname
 ```
-export APP_NAME=ecsdemo-frontend 
+export MY_APP_NAME=ecsdemo-frontend 
 export APP_ELB=$(kubectl get svc $APP_NAME -o json | jq .status.loadBalancer.ingress[0].hostname | sed 's/"//g') 
-echo -e "Adding \n CNAME: $APP_NAME \n to DOMAIN: $PROJECT_DOMAIN \n for ELB: $APP_ELB \n New Record: $APP_NAME.$PROJECT_DOMAIN"
+echo -e "Adding \n CNAME: $MY_APP_NAME \n to DOMAIN: $MY_PROJECT_DOMAIN \n for ELB: $APP_ELB \n New Record: $MY_APP_NAME.$MY_PROJECT_DOMAIN"
 envsubst < cname_template.json > cname_$APP_NAME.json
-aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_$APP_NAME.json 
+aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_$MY_APP_NAME.json 
 hange-config.json
-echo "Web Page for App: $APP_NAME.$PROJECT_DOMAIN/hello/"
+echo "Web Page for App: $MY_APP_NAME.$MY_PROJECT_DOMAIN/hello/"
 ```
 
 ## Create NAME for Java App Load Balancer
 ```
-export APP_NAME=aws-proserve-java-greeting-dev
-export APP_ELB=$(kubectl get svc $APP_NAME -o json | jq .status.loadBalancer.ingress[0].hostname | sed 's/"//g') 
-echo -e "Adding \n CNAME: $APP_NAME \n to DOMAIN: $PROJECT_DOMAIN \n for ELB: $APP_ELB \n New Record: $APP_NAME.$PROJECT_DOMAIN"
-aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_$APP_NAME.json 
+export MY_APP_NAME=aws-proserve-java-greeting-dev
+export APP_ELB=$(kubectl get svc $MY_APP_NAME -o json | jq .status.loadBalancer.ingress[0].hostname | sed 's/"//g') 
+echo -e "Adding \n CNAME: $MY_APP_NAME \n to DOMAIN: $MY_PROJECT_DOMAIN \n for ELB: $APP_ELB \n New Record: $MY_APP_NAME.$MY_PROJECT_DOMAIN"
+aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_$MY_APP_NAME.json 
 ```
