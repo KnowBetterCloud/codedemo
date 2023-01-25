@@ -85,6 +85,9 @@ This app is really cool.  It provides a "visual representation" of where the 3-t
 ## Extra Credit - CNAMEs for your Apps
 [Create CNAME for Apps](./Create_CNAMES.md)
 
+## Undo this
+[Uninstall the Codedemo Resources](./Uninstall.md)
+
 ## TODO
 I have a few things [TODO](./TODO.md)
 
