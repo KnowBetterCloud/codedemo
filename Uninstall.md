@@ -57,6 +57,7 @@ do
   done
 done
 ```
+NOTE: You may need to doublecheck that there are no lingering ELB (I believe it remains from the helm deployment of the Java app - shouldbe interesting to see how to undo that correctly (rather than simply ripping the cluster away from the ELB)
 
 ## THIS ONE... SCORCH THE EARTH
 ```
