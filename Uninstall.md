@@ -20,7 +20,15 @@ kubectl delete -f kubernetes/deployment.yaml
 
 ## Delete route53 CNAMES
 *TODO*
+export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name |  jq --arg name "$MY_PROJECT_DOMAIN." -r '.HostedZones | .[] | select(.Name=="\($name)") | .Id' )
+curl -o cname_template_delete.json https://raw.githubusercontent.com/KnowBetterCloud/codedemo/main/Files/cname_template_delete.json
 
+for MY_APP_NAME in aws-proserve-java-greeting-dev ecsdemo-frontend
+do 
+  envsubst < cname_template.json > cname_${MY_APP_NAME}_delete.json
+  aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_${MY_APP_NAME}_delete.json
+done
+  
 ## Delete IAM role(s)
 *TODO*
 NOTE:  This *may* need to be done via Console?  I.e. if I do this *before* I delete the Cloud9 instance, will I be removing the capability to do the rest of the deletes?  (I think Yes.. and therefore I should move this to the bottom)

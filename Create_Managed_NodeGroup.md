@@ -3,8 +3,8 @@
 ## You don't *need* to do this.  Unless you're *real* curious, like me.  
 ```
 MY_REGION=us-east-1
-aws ec2 create-key-pair --region $MY_REGION --key-name $APP_NAME --query 'KeyMaterial' --output text > $APP_NAME.pem
-aws ec2 describe-key-pairs --key-name $APP_NAME 
+aws ec2 create-key-pair --region $MY_REGION --key-name $PROJECT --query 'KeyMaterial' --output text > $PROJECT.pem
+aws ec2 describe-key-pairs --key-name $MY_PROJECT 
 ```
 
 Get the EKS cluster name if not already set
@@ -25,7 +25,7 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key $APP_NAME \
+  --ssh-public-key $PROJECT \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
@@ -45,7 +45,7 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key $APP_NAME \
+  --ssh-public-key $PROJECT \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \

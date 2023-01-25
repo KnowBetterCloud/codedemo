@@ -4,7 +4,7 @@
 #          I will improve the formatting so this is easier to follow
 
 I am using the following naming "standard"
-${APP_NAME}-${MYDATE}-${MYVERSION}
+${MY_PROJECT}-${MYDATE}-${MYVERSION}
 # codedemo-20230106-01
 
 CodeCommit Repo
@@ -41,7 +41,7 @@ STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
 #######
 # Create Human-Readable "params", then parse it in to json 
 cat << EOF > ${STACK_PARAMETERS_TMP}
-CodeCommitRepositoryName              $APP_NAME	
+CodeCommitRepositoryName              ${MY_PROJECT}
 ECRRepositoryName	              ${MY_PROJECT}
 CodeCommitRepositoryS3BucketObjKey    Code/app_code.zip
 CodeCommitRepositoryBranchName	      master	
@@ -104,7 +104,7 @@ EKS_CLUSTER_NAME=codedemo
 cat << EOF > ${STACK_PARAMETERS_TMP}
 EKSCodeBuildAppName	aws-proserve-java-greeting
 EcrDockerRepository	${MY_PROJECT}
-SourceRepoName ${APP_NAME}
+SourceRepoName ${MY_PROJECT}
 CodeBranchName	master
 EKSClusterName	$EKS_CLUSTER_NAME
 EnvType dev 

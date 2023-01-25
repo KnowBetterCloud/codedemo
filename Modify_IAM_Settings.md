@@ -18,7 +18,7 @@ echo "export AZS=(${AZS[@]})" | tee -a ~/.bash_profile
 aws configure set default.region ${AWS_REGION}
 aws configure get default.region
 
-# If you did not source the variables file, this will fail (need to set APP_NAME=codedemo)
+# If you did not source the variables file, this will fail (need to set MY_PROJECT=codedemo)
 aws sts get-caller-identity --query Arn | grep $MY_PROJECT -q && echo "IAM role valid" || echo "IAM role NOT valid"
 ```
 

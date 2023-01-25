@@ -9,7 +9,7 @@
                 "TTL": 300,
                 "ResourceRecords": [
                     {
-                        "Value": "$APP_NAME.$PROJECT_DOMAIN"
+                        "Value": "$MY_APP_NAME.$PROJECT_DOMAIN"
                     }
                 ]
             }

@@ -3,9 +3,9 @@
 (I'll add commenting later)
 
 ```
-[ -z $APP_NAME ] && { . ./variables.txt; }
-aws kms create-alias --alias-name alias/${APP_NAME} --target-key-id $(aws kms create-key --query KeyMetadata.Arn --output text)
-export MASTER_ARN=$(aws kms describe-key --key-id alias/${APP_NAME} --query KeyMetadata.Arn --output text)
+[ -z $MY_PROJECT ] && { . ./variables.txt; }
+aws kms create-alias --alias-name alias/${PROJECT} --target-key-id $(aws kms create-key --query KeyMetadata.Arn --output text)
+export MASTER_ARN=$(aws kms describe-key --key-id alias/${PROJECT} --query KeyMetadata.Arn --output text)
 echo "export MASTER_ARN=${MASTER_ARN}" | tee -a ~/.bash_profile
 
 c9builder=$(aws cloud9 describe-environment-memberships --environment-id=$C9_PID | jq -r '.memberships[].userArn')
