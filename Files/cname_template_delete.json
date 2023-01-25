@@ -4,12 +4,12 @@
         {
             "Action": "DELETE",
             "ResourceRecordSet": {
-                "Name": "$PROJECT_DOMAIN.",
+                "Name": "${MY_PROJECT_DOMAIN}.",
                 "Type": "CNAME",
                 "TTL": 300,
                 "ResourceRecords": [
                     {
-                        "Value": "$MY_APP_NAME.$PROJECT_DOMAIN"
+                        "Value": "${MY_APP_NAME}.${MY_PROJECT_DOMAIN}"
                     }
                 ]
             }
