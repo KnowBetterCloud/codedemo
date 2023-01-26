@@ -23,9 +23,13 @@ kubectl delete -f kubernetes/deployment.yaml
 export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name |  jq --arg name "$MY_PROJECT_DOMAIN." -r '.HostedZones | .[] | select(.Name=="\($name)") | .Id' )
 curl -o cname_template_delete.json https://raw.githubusercontent.com/KnowBetterCloud/codedemo/main/Files/cname_template_delete.json
 
-for MY_APP_NAME in aws-proserve-java-greeting-dev ecsdemo-frontend
+for THIS_APP_NAME in aws-proserve-java-greeting-dev ecsdemo-frontend
 do 
-  envsubst < cname_template.json > cname_${MY_APP_NAME}_delete.json
+  export MY_APP_NAME=$THIS_APP_NAME
+  echo "$MY_APP_NAME"
+  export CNAME=$(aws route53 list-resource-record-sets --region $MY_REGION --hosted-zone-id=${HOSTED_ZONE_ID} --query="ResourceRecordSets[?Name == '${MY_APP_NAME}.${MY_PROJECT_DOMAIN}.'].ResourceRecords[].Value" --output text)
+  echo $CNAME
+  envsubst < cname_template_delete.json > cname_${MY_APP_NAME}_delete.json
   aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_${MY_APP_NAME}_delete.json
 done
   
