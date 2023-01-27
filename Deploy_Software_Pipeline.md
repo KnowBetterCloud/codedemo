@@ -210,18 +210,20 @@ cd ~/environment
 ```
 
 ### RANDOM BITS and COMMANDS
+```
 aws eks list-clusters --query "clusters[]" --output text --no-cli-pager
 aws codecommit list-repositories --query "repositories[].repositoryName" --output=text
 aws cloudformation --region=us-east-1 describe-stacks --query "Stacks[?StackName=='codedemo-20231015-pipeline'].Outputs[0].OutputValue" --output text
+```
 
 #### Customize your code (simialr to updating the account # - which *should* be working now - above)
 So, there is an version1/app_code dir that contains an app_code.zip
 You would want to:   
-* make a backup of app (mv app app.bak  
-unzip app_code.zip  
-vi app/src/main/java/org/aws/samples/greeting/GreetingController.jav
-update the line with "return"
-zip app_code.zip app
-THEN.... copy it to s3
+* make a backup of app (mv app app.bak   
+unzip app_code.zip   
+vi app/src/main/java/org/aws/samples/greeting/GreetingController.jav  
+update the line with "return"  
+zip app_code.zip app  
+THEN.... copy it to s3  
 
 The trigger is implemented via: "PollForSourceChanges - App"
