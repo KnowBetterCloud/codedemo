@@ -187,17 +187,25 @@ project: parent: version: 2.7.7.RELEASE
 
 # Push AmazonCorretto image to your repo (This is still a WIP)
 ```
+ECR_URL=$(aws ecr describe-repositories  --query "repositories[?contains(repositoryUri,'${MY_PROJECT}')].{repositoryUri:repositoryUri}" --output text --no-cli-pager )
+ECR_URL_BASE=$(echo $ECR_URL  | grep codedemo | cut -f1 -d\/  )
+ECR_REPOSITORY_NAME=$(aws ecr describe-repositories --query "repositories[].repositoryName" --output text)
+echo "ECR_URL= $ECR_URL"
+echo "ECR_URL_BASE= $ECR_URL_BASE"
 aws ecr get-login-password --region $MY_REGION | docker login --username AWS --password-stdin $ECR_URL_BASE
 
 # registry/repository:tag
 IMAGE=amazoncorretto:8-alpine
+REPOSITORY=$(echo $IMAGE | cut -f1 -d\:)
 IMAGE_TAG=$(echo $IMAGE | cut -f2 -d\:)
 docker pull $IMAGE
 
-echo "docker tag $IMAGE $ECR_URL:$IMAGE_TAG"
+IMAGE_ID=$(docker images | grep $IMAGE_TAG | awk '{ print $3 }')
+echo "docker tag $IMAGE_ID $ECR_URL:$IMAGE_TAG"
 docker tag $IMAGE $ECR_URL:$IMAGE_TAG
-echo "docker push $ECR_URL/$IMAGE_TAG"
-docker push $ECR_URL/$IMAGE_TAG
+echo "docker push $ECR_URL:$IMAGE_TAG"
+docker push $ECR_URL:$IMAGE_TAG
+
 
 # The following... works (just an example)
 { docker tag amazoncorretto:8-alpine $ECR_URL:latest
