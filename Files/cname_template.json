@@ -4,7 +4,7 @@
         {
             "Action": "UPSERT",
             "ResourceRecordSet": {
-                "Name": "$MY_APP_NAME.$PROJECT_DOMAIN.",
+                "Name": "$MY_APP_NAME.$MY_PROJECT_DOMAIN.",
                 "Type": "CNAME",
                 "TTL": 300,
                 "ResourceRecords": [
