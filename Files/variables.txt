@@ -2,4 +2,6 @@ export MY_PROJECT="codedemo"
 export MY_PARENT_DOMAIN="clouditoutloud.com"
 export MY_PROJECT_DOMAIN="$MY_PROJECT.$MY_PARENT_DOMAIN"
 export MY_REGION=us-east-1
-export MY_EKS_VERSION="1.23" # NOTE: I intentionally leave this one version behind in order to test upgrade
+
+# NOTE: I intentionally leave this one version behind in order to test upgrade
+export MY_EKS_VERSION="1.23" 
