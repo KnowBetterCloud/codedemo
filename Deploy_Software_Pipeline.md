@@ -1,11 +1,11 @@
 # Deploy Software Pipeine
 
-# Status:  This just "notes" at this point (Jan 2023)
-#          I will improve the formatting so this is easier to follow
+Status:  This just "notes" at this point (Jan 2023)
+          I will improve the formatting so this is easier to follow
 
 I am using the following naming "standard"
 ${MY_PROJECT}-${MYDATE}-${MYVERSION}
-# codedemo-20230106-01
+ex codedemo-20230106-01
 
 CodeCommit Repo
 CodePipeline 
