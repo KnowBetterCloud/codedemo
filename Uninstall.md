@@ -80,6 +80,7 @@ do
 done
 ```
 
+## Delete the S3 bucket (optional)
 
 
 
