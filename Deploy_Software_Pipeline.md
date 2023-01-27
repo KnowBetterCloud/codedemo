@@ -169,6 +169,9 @@ change/update
 to   
       - trivy image $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
 
+OR...
+      - trivy --timeout 5m image $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
+
 Then... approve (in CodePipeline)  
 
 ## Check out the end of the CodeBuild and revie teh logs.  At teh very end is the endpoint you can acces (or review EC2: LoadBalancers)  
@@ -206,17 +209,16 @@ Change Directoy back to ~/environment
 cd ~/environment
 ```
 
-
 ### RANDOM BITS and COMMANDS
 aws eks list-clusters --query "clusters[]" --output text --no-cli-pager
 aws codecommit list-repositories --query "repositories[].repositoryName" --output=text
 aws cloudformation --region=us-east-1 describe-stacks --query "Stacks[?StackName=='codedemo-20231015-pipeline'].Outputs[0].OutputValue" --output text
 
-## Customize your code
-### So, there is an version1/app_code dir that contains an app_code.zip
-You would want to 
-* make a backup of app (mv app app.bak
-unzip app_code.zip
+#### Customize your code (simialr to updating the account # - which *should* be working now - above)
+So, there is an version1/app_code dir that contains an app_code.zip
+You would want to:   
+* make a backup of app (mv app app.bak  
+unzip app_code.zip  
 vi app/src/main/java/org/aws/samples/greeting/GreetingController.jav
 update the line with "return"
 zip app_code.zip app
