@@ -60,8 +60,8 @@ The following is a "intelligent link" that will begin the steps to create a role
 NOTE:  please see the very end of the smart link - feel free to use whatever name suits you for the IAM role  
 It defaults to ${MY_PROJECT}-admin (codedemo-admin)
 
-* Run this in your Cloud9 and then cut-and-paste the link in to a browser
-  * echo "https://console.aws.amazon.com/iam/home#/roles$new?step=review&commonUseCase=EC2%2BEC2&selectedUseCase=EC2&policies=arn:aws:iam::aws:policy%2FAdministratorAccess&roleName=${MY_PROJECT}-admin"
+* Follow the following link 
+  * https://console.aws.amazon.com/iam/home#/roles$new?step=review&commonUseCase=EC2%2BEC2&selectedUseCase=EC2&policies=arn:aws:iam::aws:policy%2FAdministratorAccess&roleName=codedemo-admin
 * Click Next: Permissions  
 * Attach permsission policies (ensure that AdministratorAccess is checked)
 * Cick Next: Tags  (I'd get in the habit of using tags)
