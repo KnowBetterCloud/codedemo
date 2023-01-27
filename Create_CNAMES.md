@@ -41,7 +41,7 @@ export APP_ELB=$(kubectl get svc $MY_APP_NAME -o json | jq .status.loadBalancer.
 echo -e "Adding \n CNAME: $MY_APP_NAME \n to DOMAIN: $MY_PROJECT_DOMAIN \n for ELB: $APP_ELB \n New Record: $MY_APP_NAME.$MY_PROJECT_DOMAIN"
 envsubst < cname_template.json > cname_$MY_APP_NAME.json
 aws route53 change-resource-record-sets --hosted-zone-id $HOSTED_ZONE_ID --change-batch file://cname_$MY_APP_NAME.json 
-echo "Web Page for App: http://$MY_APP_NAME.$MY_PROJECT_DOMAIN/hello/"
+echo "Web Page for App: http://$MY_APP_NAME.$MY_PROJECT_DOMAIN/"
 ```
 
 ## Create NAME for Java App Load Balancer
