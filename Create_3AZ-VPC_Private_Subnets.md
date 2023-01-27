@@ -4,7 +4,6 @@ https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 
 ```
 MY_EKS_CLUSTER="$MY_PROJECT"
-MY_REGION="us-east-1"
 ```
 
 NOTE:  I am directing you to pull a file from *my* Git Repo... Therefore, I urge caution, and then advise you to compare my file to the AWS example.   
@@ -19,7 +18,7 @@ sdiff amazon-eks-vpc-private-subnets.yaml amazon-eks-vpc-3-private-subnets.yaml
 ```
 
 ```
-MY_STACK_NAME="${MY_EKS_CLUSTER}"
+MY_STACK_NAME="${MY_EKS_CLUSTER}-VPC"
 aws cloudformation create-stack --stack-name "${MY_STACK_NAME}" \
   --template-body file://amazon-eks-vpc-3-private-subnets.yaml \
   --region ${MY_REGION}
