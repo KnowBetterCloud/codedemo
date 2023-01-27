@@ -3,14 +3,18 @@
 ## You don't *need* to do this.  Unless you're *real* curious, like me.  
 ```
 MY_REGION=us-east-1
-aws ec2 create-key-pair --region $MY_REGION --key-name $PROJECT --query 'KeyMaterial' --output text > $PROJECT.pem
+aws ec2 create-key-pair --region $MY_REGION --key-name $MY_PROJECT --query 'KeyMaterial' --output text > $MY_PROJECT.pem
 aws ec2 describe-key-pairs --key-name $MY_PROJECT 
 ```
 
 Get the EKS cluster name if not already set
 ```
 [ -z $MY_EKS_CLUSTER ]  &&  { MY_EKS_CLUSTER=$(aws eks list-clusters --query 'clusters' --output text); }
+echo "EKS Cluster: $MY_EKS_CLUSTER"
 ```
+
+NOTE: this activity will create a Cloudformation Stack for each Managed Node Group  
+Stack name: eksctl-codedemo-nodegroup-my-mng-al2 (example)
 
 ## Amazon Linux 2 (AL2) AMI
 ```
@@ -25,12 +29,14 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key $PROJECT \
+  --ssh-public-key $MY_PROJECT \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
   --managed \
   --node-private-networking
+
+kubectl get nodes -o wide
 ```
 
 ## Bottlerocket AMI
@@ -45,12 +51,14 @@ eksctl create nodegroup \
   --nodes-min 2 \
   --nodes-max 4 \
   --ssh-access \
-  --ssh-public-key $PROJECT \
+  --ssh-public-key $MY_PROJECT \
   --asg-access \
   --external-dns-access \
   --full-ecr-access \
   --managed \
   --node-private-networking
+
+kubectl get nodes -o wide
 ```
 
 ## Some status reporting
