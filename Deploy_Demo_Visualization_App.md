@@ -3,7 +3,7 @@
 (I'll add commenting later)
 
 ```
-[ -z $MY_PROJECT ] && { . ./variables.txt; }
+[ -z $MY_PROJECT ] && { echo "Sourcing Project Variables"; . ./variables.txt; }
 aws kms create-alias --alias-name alias/${PROJECT} --target-key-id $(aws kms create-key --query KeyMetadata.Arn --output text)
 export MASTER_ARN=$(aws kms describe-key --key-id alias/${PROJECT} --query KeyMetadata.Arn --output text)
 echo "export MASTER_ARN=${MASTER_ARN}" | tee -a ~/.bash_profile
@@ -36,9 +36,10 @@ kubectl apply -f kubernetes/deployment.yaml
 kubectl apply -f kubernetes/service.yaml
 kubectl get deployment ecsdemo-frontend
 
-kubectl get svc
+kubectl get svc | grep ecsdemo
+kubectl get deployment | grep ecsdemo 
 
 curl -o replica_control.sh https://raw.githubusercontent.com/KnowBetterCloud/codedemo/main/Scripts/replica_control.sh
 chmod +x replica_control.sh
-./replica_control.sh up
+./replica_control.sh current 
 ```
