@@ -74,6 +74,9 @@ The following contains the procedure to create either an Amazon Linux 2 (AL2) or
 
 [Create a Managed Node Group](./Create_Managed_NodeGroup.md)
 
+## Deploy Kubernetes Dashboard
+Follow this guide to [Deploy Official Kubernetes Dashboard](./Deploy_Kubernetes_Dashboard.md)
+
 ## Deploy Visualization Demo App
 This app is really cool.  It provides a "visual representation" of where the 3-tiers of pods are running.
 
@@ -84,6 +87,11 @@ This app is really cool.  It provides a "visual representation" of where the 3-t
 
 ## Extra Credit - CNAMEs for your Apps
 [Create CNAME for Apps](./Create_CNAMES.md)
+
+## Upgrade Cluster Version
+Upgrade your cluster from 1.23 to 1.24 (as of 2023-01-24)
+[Upgrade your EKS Cluster](./Upgrade_EKS.md)
+
 
 ## Undo this
 [Uninstall the Codedemo Resources](./Uninstall.md)
