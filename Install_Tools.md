@@ -7,9 +7,19 @@ If you are following this demo, install these tools in your Cloud9 Environment
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
 ```
-The following I modified from the original.  (if you do not understand what the next command does, feel free to follow the guide from kubernete.io (link below)  
+The following I modified from the original.  (if you do not understand what the next command does, feel free to follow the guide from kubernetes.io (link below)  
+NOTE: It is normal, at this point, to see it complain that the connection was refused.
+
 ```
-(echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check) && { sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl; kubectl --version; } || { echo "ERROR: checksum did not match"; }
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check 
+case $? in 
+  0)
+   sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl; kubectl version  
+  ;;
+  1)
+    echo "ERROR: checksum did not match"
+  ;;
+esac
 
 ```
 Above based on: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
@@ -17,12 +27,15 @@ Above based on: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 ## Install/Update AWS CLI
 
 (NOTE:  I will revisit this, but it *does* appear to be the best way to approach this)
+
+TODO:  Add logic to check whether aws-cli is already installed (and replace the existing?  Still not sure)
 ```
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 aws --version
 sudo ./aws/install
 aws --version
+/usr/local/bin/aws --version
 ```
 Maintenance Task:  aws-cli (1.19.112 already exists at /usr/bin/aws)  
 
