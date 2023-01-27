@@ -39,6 +39,7 @@ kubectl get deployment ecsdemo-frontend
 kubectl get svc | grep ecsdemo
 kubectl get deployment | grep ecsdemo 
 
+cd ~/environment/
 curl -o replica_control.sh https://raw.githubusercontent.com/KnowBetterCloud/codedemo/main/Scripts/replica_control.sh
 chmod +x replica_control.sh
 ./replica_control.sh current 
