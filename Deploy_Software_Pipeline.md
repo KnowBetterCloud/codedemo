@@ -4,7 +4,8 @@ Status:  This just "notes" at this point (Jan 2023)
           I will improve the formatting so this is easier to follow
 
 I am using the following naming "standard"  
-\${MY_PROJECT}-\${MYDATE}-\${MYVERSION}  
+"${MY_PROJECT}-${MY_DATE}-${MY_VERSION}"
+
 ex codedemo-20230106-01
 
 CodeCommit Repo
