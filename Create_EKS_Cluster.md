@@ -1,5 +1,6 @@
 # Create EKS Cluster
 
+NOTE:  You have to ensure that your VPC has been created (check Cloudformation)
 
 ### OK.. now on to the cluster
 ```
@@ -11,7 +12,7 @@ SUBNETS=$(aws ec2 describe-subnets --region $MY_REGION  --filters "Name=vpc-id,V
 ```
 
 The following command is not async - i.e. it does not return the command prompt and it will keep providing output until it is complete.  Enjoy!  
-It will likely take 15~25 minutes
+It will likely take 15~25 minutes - and you can watch the progress in the Cloudformation | Stacks Console 
 ```
 eksctl create cluster --name ${MY_EKS_CLUSTER} --region ${MY_REGION} --version ${MY_EKS_VERSION} --vpc-private-subnets $(echo $SUBNETS | sed 's/ /,/g') --without-nodegroup
 ```
