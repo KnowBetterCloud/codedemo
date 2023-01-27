@@ -1,5 +1,4 @@
 # Deploy Software Pipeine
-
 Status:  This just "notes" at this point (Jan 2023)
           I will improve the formatting so this is easier to follow
 
@@ -14,39 +13,54 @@ S3 Bucket
 
 ## Variables for this Demo
 ```
-. ./variables.txt
+[ -z $MY_PROJECT ] && { echo "Sourcing Project Variables"; . ./variables.txt; }
 echo "Using Project: ${MY_PROJECT}"
 echo "Deployed in Region: $MY_REGION"
 ```
 
+## Create a Project Directory and manage code there.  Create S3 bucket to copy code to.
 ```
 mkdir -p ${HOME}/Projects/${MY_PROJECT}/; cd $_
 wget https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/samples/p-attach/95a5b5c2-d7fb-41eb-9089-455318c0d585/attachments/attachment.zip
 unzip attachment.zip 
 unzip java-cicd-eks-cfn.zip   
+```
 
-aws s3 mb s3://${MY_PROJECT}
+### Update aws-proserve-java-greeting code - replace the "default" repo URL with our repo URL
+NOTE:  This expect GNU-sed (MacOS sed will not work)
+-- confirm this works, else: THIS NEEDS TO BE DONE VIA CONSOLE YET - I.e I need to rework this code to add to app_code.
+```
+cd version1/app_code
+unzip -o app_code.zip 
+sed -i -e "s/509501787486.dkr.ecr.us-east-2.amazonaws.com/$ECR_URL_BASE/g" $(find . -name values.dev.yaml)
+grep dkr $(find . -name values.dev.yaml)
+zip -r app_code.zip app aws-proserve-java-greeting/ buildspec_deploy buildspec.yml
+cd -
+```
+
+Create S3 Buck and upload updated code
+```
+aws s3 mb s3://${MY_S3_BUCKET_NAME}
 # NOTE: we need to create a folder ("Code") which will happen when we cp bits up to the bucket
-# ALSO NOTE: it is *here* you would make code changes (see bottom of this doc)
-aws s3 cp $(find . -name app_code.zip) s3://${MY_PROJECT}/Code/   
-aws s3 ls s3://${MY_PROJECT}/Code/
+aws s3 cp $(find . -name app_code.zip) s3://${MY_S3_BUCKET_NAME}/Code/   
+aws s3 ls s3://${MY_S3_BUCKET_NAME}/Code/
 ```
 
 ## Create the Stack which will create 
-#    * ECR repo
-#    * CodeCommit repo
+  * ECR repo
+  * CodeCommit repo
 ```
 STACK_NAME="${MY_PROJECT}-codecommit-ecr"
 STACK_PARAMETERS=${STACK_NAME}.cfn
 STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
-#######
+
 # Create Human-Readable "params", then parse it in to json 
 cat << EOF > ${STACK_PARAMETERS_TMP}
 CodeCommitRepositoryName              ${MY_PROJECT}
 ECRRepositoryName	              ${MY_PROJECT}
 CodeCommitRepositoryS3BucketObjKey    Code/app_code.zip
 CodeCommitRepositoryBranchName	      master	
-CodeCommitRepositoryS3Bucket	      ${MY_PROJECT}
+CodeCommitRepositoryS3Bucket	      ${MY_S3_BUCKET_NAME}
 EOF
 
 grep -v ^# $STACK_PARAMETERS_TMP | while read ParameterKey ParameterValue DUMMY; do echo -e "  {\n    \"ParameterKey\": \"${ParameterKey}\",\n    \"ParameterValue\": \"${ParameterValue}\"\n  },"; done > ${STACK_PARAMETERS}
@@ -85,12 +99,6 @@ echo "ECR_URL_BASE= $ECR_URL_BASE"
 aws codecommit list-repositories --query "repositories[].repositoryName" --output text
 ```
 
-## Update aws-proserve-java-greeting code - replace the "default" repo URL with our repo URL
-NOTE:  This expect GNU-sed (MacOS sed will not work)
-```
-sed -i -e "s/509501787486.dkr.ecr.us-east-2.amazonaws.com/$ECR_URL_BASE/g" $(find . -name values.dev.yaml)
-```
-
 CFN Template to deploy CodePipeline to build Docker Image of java application and push to ECR and deploy to EKS
 ```
 STACK_NAME="${MY_PROJECT}-codepipeline"
@@ -98,16 +106,16 @@ STACK_PARAMETERS=${STACK_NAME}.cfn
 STACK_PARAMETERS_TMP=${STACK_NAME}.cfn.tmp
 ```
 
-#TODO: Need to get this to query for the cluster name 
-#EKS_CLUSTER_NAME=$(aws eks list-clusters --query "clusters" --output text)
+TODO: Need to get this to query for the cluster name 
+- MY_EKS_CLUSTER_NAME=$(aws eks list-clusters --query "clusters" --output text)
 ```
-EKS_CLUSTER_NAME=codedemo
+MY_EKS_CLUSTER_NAME=codedemo
 cat << EOF > ${STACK_PARAMETERS_TMP}
 EKSCodeBuildAppName	aws-proserve-java-greeting
 EcrDockerRepository	${MY_PROJECT}
 SourceRepoName ${MY_PROJECT}
 CodeBranchName	master
-EKSClusterName	$EKS_CLUSTER_NAME
+EKSClusterName	$MY_EKS_CLUSTER_NAME
 EnvType dev 
 EOF
 ```
@@ -145,7 +153,7 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
 
 # Confirm kubeconfig is able to query for cluster
 ```
-$(eksctl get clusters) || { aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${MY_REGION}; }
+(eksctl get clusters) || { aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${MY_REGION}; }
 aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${MY_PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text
 
 bash $(find . -name kube_aws_auth_configmap_patch.sh) $(aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${MY_PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text)
@@ -192,6 +200,12 @@ docker push $ECR_URL/$IMAGE_TAG
 { docker tag amazoncorretto:8-alpine $ECR_URL:latest
 docker push $ECR_URL:latest }
 ```
+
+Change Directoy back to ~/environment
+```
+cd ~/environment
+```
+
 
 ### RANDOM BITS and COMMANDS
 aws eks list-clusters --query "clusters[]" --output text --no-cli-pager
