@@ -79,6 +79,11 @@ kubectl completion bash >>  ~/.bash_completion
 . /etc/profile.d/bash_completion.sh
 . ~/.bash_completion
 ```
+## Install Helm CLI
+```
+curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+helm version --short
+```
 
 ## Random bits
 Update the Load Balancer Controller version
