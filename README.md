@@ -92,8 +92,10 @@ This app is really cool.  It provides a "visual representation" of where the 3-t
 Upgrade your cluster from 1.23 to 1.24 (as of 2023-01-24)
 [Upgrade your EKS Cluster](./Upgrade_EKS.md)
 
+## Autoscaling
+I put both Horizontal Pod Autoscaling (HPA) and Cluster Autoscaling (CA) in the same [Autoscaling](./Autoscaling.md) doc.
 
-## Undo this
+## Undo all this
 [Uninstall the Codedemo Resources](./Uninstall.md)
 
 ## TODO
