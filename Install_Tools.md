@@ -83,6 +83,15 @@ kubectl completion bash >>  ~/.bash_completion
 ```
 curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 helm version --short
+helm repo add stable https://charts.helm.sh/stable
+helm completion bash >> ~/.bash_completion
+. /etc/profile.d/bash_completion.sh
+. ~/.bash_completion
+source <(helm completion bash)
+helm repo add stable https://charts.helm.sh/stable
+helm repo update
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
 ```
 
 ## Random bits
