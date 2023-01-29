@@ -35,30 +35,34 @@ kubectl autoscale deployment php-apache `#The target average CPU utilization` \
     --max=10 `#The upper limit for the number of pods that can be set by the autoscaler`
 ```
 
+
+Past this point is the "repeatable" or "demo" portion
+Terminal 1
 ```
 kubectl top node
+kubectl get hpa -w
 ```
 
-In a separate Terminal
+Terminal 2
 ```
 kubectl run -i --tty load-generator --image=busybox /bin/sh
 while true; do wget -q -O - http://php-apache; done
-# Use CTRL-C to stop and CTRL-D to exit
-kubectl delete pod load-generator
- while true; do kubectl get pods | egrep 'load|php'; echo; sleep 2; done
 ```
 
-Back to main
+Terminal 1 (review the hpa command)
 ```
 kubectl get hpa -w
 ```
 
+Terminal 2
+```
+# Use CTRL-C to stop and CTRL-D to exit
+kubectl delete pod load-generator
+while true; do kubectl get pods | egrep 'load|php'; echo; sleep 2; done
+```
+
+# If things got out of hand.... (but.. HPA should handle things fine)
 ```
 kubectl get rs
 kubectl scale --replicas=1 rs/php-apache-6f8f979d4
-```
-
-```
- --tty load-generator --image=busybox /bin/sh
-
 ```
