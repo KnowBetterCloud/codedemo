@@ -19,6 +19,7 @@ do
                         for REPLICAS in 3 2 1
                         do
                                 kubectl scale deployment $DEPLOYMENT --replicas=$REPLICAS
+                                echo "Message:  we need less $DEPLOYMENT.  Scaling down."
                                 echo "Deployment: $DEPLOYMENT scaled to - $REPLICAS"
                                 sleep $SLEEPYTIME
                         done
@@ -30,6 +31,7 @@ do
                         for REPLICAS in 1 2 3
                         do
                                 kubectl scale deployment $DEPLOYMENT --replicas=$REPLICAS
+                                echo "Message:  we need more $DEPLOYMENT.  Scaling up."
                                 echo "Deployment: $DEPLOYMENT scaled to - $REPLICAS"
                                 sleep $SLEEPYTIME
                         done
