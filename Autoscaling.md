@@ -45,8 +45,8 @@ kubectl get hpa -w
 Terminal 2
 ```
 kubectl top node
+kubectl get pods -o wide -w
 ```
-
 
 Terminal 3
 ```
@@ -54,10 +54,7 @@ kubectl run -i --tty load-generator --image=busybox /bin/sh
 while true; do wget -q -O - http://php-apache; done
 ```
 
-Terminal 1 (review the hpa command)
-```
-kubectl get hpa -w
-```
+Terminal 1 (review the hpa command)  
 
 Terminal 3
 ```
@@ -66,10 +63,7 @@ kubectl delete pod load-generator
 while true; do kubectl get pods | egrep 'load|php'; echo; sleep 2; done
 ```
 
-Terminal 2 (this will take about 5 minutes before it start to rescale
-```
-kubectl get pods -o wide -w
-```
+Terminal 2 (review the running "get pods" from before - it will take about 5 minutes before it start to rescale)  
 
 # If things got out of hand.... (but.. HPA should handle things fine)
 ```
