@@ -7,7 +7,7 @@ usage() { echo "$0 {up|down|current}"; exit 9; }
 if  [ $# -ne 1 ]; then usage; fi 
 ACTION=$1
 DEPLOYMENTS="ecsdemo-frontend ecsdemo-crystal ecsdemo-nodejs"
-SLEEPYTIME=8
+SLEEPYTIME=3
 
 for DEPLOYMENT in $DEPLOYMENTS
 do
