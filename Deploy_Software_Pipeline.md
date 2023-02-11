@@ -206,7 +206,6 @@ docker tag $IMAGE $ECR_URL:$IMAGE_TAG
 echo "docker push $ECR_URL:$IMAGE_TAG"
 docker push $ECR_URL:$IMAGE_TAG
 
-
 # The following... works (just an example)
 { docker tag amazoncorretto:8-alpine $ECR_URL:latest
 docker push $ECR_URL:latest }
