@@ -5,7 +5,7 @@ I probably should write out a "vars file", created at the time this project was 
 
 *possibly* add the vars to the ~/.bashrc - OR... create a file ~/vars.txt and then source it from .bashrc  
 ```
-echo "Sourcing Project Vars: ~/vars.txt" | tee -a ~/.bashrc  
+echo "# Sourcing Project Vars: ~/vars.txt" | tee -a ~/.bashrc  
 echo "[ -f ~/.vars.txt] && . ~/vars.txt" | tee -a ~/.bashrc  
 ```
 
