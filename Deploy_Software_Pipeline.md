@@ -40,10 +40,10 @@ cd -
 
 Create S3 Buck and upload updated code
 ```
-aws s3 mb s3://${MY_S3_BUCKET_NAME}
+aws s3 mb s3://${MY_S3_BUCKET_NAME} --region $MY_REGION
 # NOTE: we need to create a folder ("Code") which will happen when we cp bits up to the bucket
-aws s3 cp $(find . -name app_code.zip) s3://${MY_S3_BUCKET_NAME}/Code/   
-aws s3 ls s3://${MY_S3_BUCKET_NAME}/Code/
+aws s3 cp $(find . -name app_code.zip) s3://${MY_S3_BUCKET_NAME}/Code/   --region $MY_REGION
+aws s3 ls s3://${MY_S3_BUCKET_NAME}/Code/ --region $MY_REGION
 ```
 
 ## Create the Stack which will create 
@@ -85,7 +85,7 @@ echo "]" >> ${STACK_PARAMETERS}
 
 # Validate the provided template 
 ```
-aws cloudformation validate-template --template-body file://$(find . -name codecommit.yaml)                       
+aws cloudformation validate-template --template-body file://$(find . -name codecommit.yaml) --region $MY_REGION
 aws cloudformation create-stack --stack-name "${STACK_NAME}" \
   --template-body file://$(find . -name codecommit.yaml) \
   --parameters file://${STACK_PARAMETERS} \
@@ -96,7 +96,7 @@ ECR_URL_BASE=$(echo $ECR_URL  | grep codedemo | cut -f1 -d\/  )
 echo "ECR_URL= $ECR_URL"
 echo "ECR_URL_BASE= $ECR_URL_BASE"
 
-aws codecommit list-repositories --query "repositories[].repositoryName" --output text
+aws codecommit list-repositories --region $MY_REGION --query "repositories[].repositoryName" --output text
 ```
 
 CFN Template to deploy CodePipeline to build Docker Image of java application and push to ECR and deploy to EKS

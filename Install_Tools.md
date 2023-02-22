@@ -91,7 +91,6 @@ source <(helm completion bash)
 helm repo add stable https://charts.helm.sh/stable
 helm repo update
 helm repo add bitnami https://charts.bitnami.com/bitnami
-
 ```
 
 ## Random bits

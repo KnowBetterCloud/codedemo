@@ -5,7 +5,7 @@ NOTE:  You have to ensure that your VPC has been created (check Cloudformation)
 ### OK.. now on to the cluster
 ```
 # Get the VPC_ID for the $MY_PROJECT VPC we created
-MY_VPC_ID=$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=${MY_PROJECT}-VPC" --query "Vpcs[].VpcId" --output=text)
+MY_VPC_ID=$(aws ec2 describe-vpcs --region $MY_REGION --filters "Name=tag:Name,Values=${MY_PROJECT}-VPC" --query "Vpcs[].VpcId" --output=text)
 
 # Gather the SubnetId for the private subnets
 SUBNETS=$(aws ec2 describe-subnets --region $MY_REGION  --filters "Name=vpc-id,Values=${MY_VPC_ID}" --query 'Subnets[?MapPublicIpOnLaunch==`false`].SubnetId' --output=text)
@@ -19,6 +19,6 @@ eksctl create cluster --name ${MY_EKS_CLUSTER} --region ${MY_REGION} --version $
 
 Get the Status of the Cloudformation Stack
 ```
-aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, 'eksctl-${MY_PROJECT}-cluster')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"
+aws cloudformation list-stacks --region $MY_REGION --query "StackSummaries[?starts_with(StackName, 'eksctl-${MY_PROJECT}-cluster')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"
 ```
 

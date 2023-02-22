@@ -13,12 +13,12 @@ Changes I made:
 
 ```
 curl -o amazon-eks-vpc-private-subnets.yaml https://s3.us-west-2.amazonaws.com/amazon-eks/cloudformation/2020-10-29/amazon-eks-vpc-private-subnets.yaml
-curl -o amazon-eks-vpc-3-private-subnets.yaml https://raw.githubusercontent.com/cloudxabide/Mr_MeeseEKS/main/Files/amazon-eks-vpc-3-private-subnets.yaml
+curl -o amazon-eks-vpc-3-private-subnets.yaml https://raw.githubusercontent.com/knowbettercloud/codedemo/main/Files/amazon-eks-vpc-3-private-subnets.yaml
 sdiff amazon-eks-vpc-private-subnets.yaml amazon-eks-vpc-3-private-subnets.yaml
 ```
 
 ```
-MY_STACK_NAME="${MY_EKS_CLUSTER}-VPC"
+MY_STACK_NAME="${MY_EKS_CLUSTER}"
 aws cloudformation create-stack --stack-name "${MY_STACK_NAME}" \
   --template-body file://amazon-eks-vpc-3-private-subnets.yaml \
   --region ${MY_REGION}
@@ -27,5 +27,5 @@ aws cloudformation create-stack --stack-name "${MY_STACK_NAME}" \
 Check the status of the Cloudformation Stacks 
 NOTE: there will be many as all the stacks start with "$MY_PROJECT" (codedemo)
 ```
-aws cloudformation list-stacks --query "StackSummaries[?starts_with(StackName, '${MY_STACK_NAME}')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"
+aws cloudformation list-stacks --region $MY_REGION --query "StackSummaries[?starts_with(StackName, '${MY_STACK_NAME}')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"
 ```

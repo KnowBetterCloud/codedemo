@@ -2,9 +2,9 @@
 
 ## You don't *need* to do this.  Unless you're *real* curious, like me.  
 ```
-MY_REGION=us-east-1
+[ -e $MY_REGION ] && MY_REGION=us-east-1
 aws ec2 create-key-pair --region $MY_REGION --key-name $MY_PROJECT --query 'KeyMaterial' --output text > $MY_PROJECT.pem
-aws ec2 describe-key-pairs --key-name $MY_PROJECT 
+aws ec2 describe-key-pairs --region $MY_REGION --key-name $MY_PROJECT 
 ```
 
 Get the EKS cluster name if not already set
@@ -64,6 +64,6 @@ kubectl get nodes -o wide
 ## Some status reporting
 ```
 kubectl get nodes -o wide
-aws eks list-nodegroups --cluster-name $MY_EKS_CLUSTER
-eksctl get nodegroup --cluster $MY_EKS_CLUSTER
+aws eks list-nodegroups --region $MY_REGION --cluster-name $MY_EKS_CLUSTER
+eksctl get nodegroup --region $MY_REGION --cluster $MY_EKS_CLUSTER
 ```

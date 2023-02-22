@@ -1,6 +1,5 @@
 # Implement WAF
 
-
 TODO: Codify this  
 BLOCKER:  my apps use "Load Balancer" and not APplication Load Balancer - need get that figured out, but later  
           So - WAF is not possible for my current apps
