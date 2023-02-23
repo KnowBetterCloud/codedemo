@@ -1,4 +1,4 @@
-# Deploy Software Pipeine
+# Deploy Software Pipeline
 Status:  This just "notes" at this point (Jan 2023)
           I will improve the formatting so this is easier to follow
 
@@ -30,9 +30,12 @@ unzip java-cicd-eks-cfn.zip
 NOTE:  This expect GNU-sed (MacOS sed will not work)
 -- confirm this works, else: THIS NEEDS TO BE DONE VIA CONSOLE YET - I.e I need to rework this code to add to app_code.
 ```
+[ -e $MY_ACCOUNT_ID ] && { export MY_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output=text); }
 cd version1/app_code
 unzip -o app_code.zip 
-sed -i -e "s/509501787486.dkr.ecr.us-east-2.amazonaws.com/$ECR_URL_BASE/g" $(find . -name values.dev.yaml)
+sed -i -e "s/509501787486/${MY_ACCOUNT_ID}/g" $(find . -name values.dev.yaml)
+grep dkr $(find . -name values.dev.yaml)
+sed -i -e "s/us-east-2/${MY_REGION}/g" $(find . -name values.dev.yaml)
 grep dkr $(find . -name values.dev.yaml)
 zip -r app_code.zip app aws-proserve-java-greeting/ buildspec_deploy buildspec.yml
 cd -
@@ -90,11 +93,14 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
   --template-body file://$(find . -name codecommit.yaml) \
   --parameters file://${STACK_PARAMETERS} \
   --region $MY_REGION
+```
 
+## Gather ECR Information
+```
 ECR_URL=$(aws ecr describe-repositories  --query "repositories[?contains(repositoryUri,'${MY_PROJECT}')].{repositoryUri:repositoryUri}" --output text --no-cli-pager )
 ECR_URL_BASE=$(echo $ECR_URL  | grep codedemo | cut -f1 -d\/  )
-echo "ECR_URL= $ECR_URL"
-echo "ECR_URL_BASE= $ECR_URL_BASE"
+echo "ECR_URL: $ECR_URL"
+echo "ECR_URL_BASE: $ECR_URL_BASE"
 
 aws codecommit list-repositories --region $MY_REGION --query "repositories[].repositoryName" --output text
 ```
@@ -156,6 +162,7 @@ aws cloudformation create-stack --stack-name "${STACK_NAME}" \
 (eksctl get clusters) || { aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region ${MY_REGION}; }
 aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${MY_PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text
 
+## You need to wait until the previous command provides output
 bash $(find . -name kube_aws_auth_configmap_patch.sh) $(aws cloudformation --region=${MY_REGION} describe-stacks --query "Stacks[?StackName=='${MY_PROJECT}-codepipeline'].Outputs[0].OutputValue" --output text)
 ```
 

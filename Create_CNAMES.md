@@ -12,7 +12,7 @@ STATUS:
 Assuming the following is already exported as ENV variables  
 ```
 MY_PROJECT=codedemo  
-MY_PARENT_DOMAIN=clouditoutlout.com  
+MY_PARENT_DOMAIN=clouditoutloud.com  
 MY_PROJECT_DOMAIN=$MY_PROJECT.$MY_PARENT_DOMAIN
 MY_APP_HOSTNAME="$MY_APP_NAME.$MY_PROJECT_DOMAIN"  
 ```
@@ -20,10 +20,11 @@ MY_APP_HOSTNAME="$MY_APP_NAME.$MY_PROJECT_DOMAIN"
 Get the Hosted Zone Id for the Project Domain
 ```
 #export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name |  jq --arg name "$MY_PROJECT_DOMAIN." -r '.HostedZones | .[] | select(.Name=="\($MY_PROJECT_DOMAIN)") | .Id' )
-export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name "$MY_PROJECT_DOMAIN" --query "HostedZones[].Id" --output text)
+export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name '$MY_PROJECT_DOMAIN' --query "HostedZones[].Id" --output text)
 
+# Hard coded with domain
 # aws route53 list-hosted-zones-by-name --dns-name ${MY_PROJECT_DOMAIN} --query "HostedZones[].Id" --output text
-export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name codedemo.clouditoutloud.com. --query "HostedZones[].Id" --output text)
+# export HOSTED_ZONE_ID=$(aws route53 list-hosted-zones-by-name --dns-name codedemo.clouditoutloud.com. --query "HostedZones[].Id" --output text)
 ```
 
 Pull down the CNAME template
