@@ -18,7 +18,6 @@ Stack name: eksctl-codedemo-nodegroup-my-mng-al2 (example)
 
 ## Amazon Linux 2 (AL2) AMI
 ```
-
 eksctl create nodegroup \
   --cluster $MY_EKS_CLUSTER_NAME \
   --region $MY_REGION \
@@ -37,6 +36,7 @@ eksctl create nodegroup \
   --node-private-networking
 
 kubectl get nodes -o wide
+
 ```
 
 ## Bottlerocket AMI
@@ -59,6 +59,7 @@ eksctl create nodegroup \
   --node-private-networking
 
 kubectl get nodes -o wide
+
 ```
 
 ## Some status reporting
