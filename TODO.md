@@ -11,3 +11,6 @@ echo "[ -f ~/.vars.txt] && . ~/vars.txt" | tee -a ~/.bashrc
 
 ## Install latest EKS version
 Currently my code is hardcoded to a version.  Probably should make it default to "current".
+
+## StackName (STACK_NAME) for VPC (2023-03-16)
+It *may* be sorted now, but it should be "PROJECT"-VPC for other commands to work.  I *thought* the VPC was somehow appended to the existing value - which would end up being PROJECT-VPC-VPC.
