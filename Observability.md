@@ -7,7 +7,7 @@ eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=codedemo -
 
 ```
 eksctl create iamserviceaccount \
-  --cluster $MY_EKS_CLUSTER \
+  --cluster $MY_EKS_CLUSTER_NAME \
   --namespace amazon-cloudwatch \
   --name cloudwatch-agent \
   --attach-policy-arn  arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy \
@@ -17,7 +17,7 @@ eksctl create iamserviceaccount \
 
 ```
 eksctl create iamserviceaccount \
-  --cluster $MY_EKS_CLUSTER \
+  --cluster $MY_EKS_CLUSTER_NAME \
   --namespace amazon-cloudwatch \
   --name fluentd \
   --attach-policy-arn  arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy \
@@ -26,7 +26,7 @@ eksctl create iamserviceaccount \
 ```
 
 ```
-curl -s https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluentd-quickstart.yaml | sed "s/{{cluster_name}}/$MY_EKS_CLUSTER/;s/{{region_name}}/${AWS_REGION}/" | kubectl apply -f -    
+curl -s https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluentd-quickstart.yaml | sed "s/{{cluster_name}}/$MY_EKS_CLUSTER_NAME/;s/{{region_name}}/${AWS_REGION}/" | kubectl apply -f -    
 ```
 
 ```
@@ -35,7 +35,7 @@ kubectl -n amazon-cloudwatch get daemonsets
 
 ```
 eksctl create iamserviceaccount \
-  --cluster $MY_EKS_CLUSTER \
+  --cluster $MY_EKS_CLUSTER_NAME \
   --namespace amazon-cloudwatch \
   --name cwagent-prometheus \
   --attach-policy-arn  arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy \
@@ -57,7 +57,7 @@ Enable Control-Plane Logs
 eksctl utils update-cluster-logging \
     --enable-types all \
     --region ${AWS_REGION} \
-    --cluster $MY_EKS_CLUSTER \
+    --cluster $MY_EKS_CLUSTER_NAME \
     --approve
 ```
 

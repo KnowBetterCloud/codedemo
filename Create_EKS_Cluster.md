@@ -9,12 +9,17 @@ MY_VPC_ID=$(aws ec2 describe-vpcs --region $MY_REGION --filters "Name=tag:Name,V
 
 # Gather the SubnetId for the private subnets
 SUBNETS=$(aws ec2 describe-subnets --region $MY_REGION  --filters "Name=vpc-id,Values=${MY_VPC_ID}" --query 'Subnets[?MapPublicIpOnLaunch==`false`].SubnetId' --output=text)
+
+echo "$MY_VPC_ID"
+echo "$SUBNETS"
+
 ```
+
 
 The following command is not async - i.e. it does not return the command prompt and it will keep providing output until it is complete.  Enjoy!  
 It will likely take 15~25 minutes - and you can watch the progress in the Cloudformation | Stacks Console 
 ```
-eksctl create cluster --name ${MY_EKS_CLUSTER} --region ${MY_REGION} --version ${MY_EKS_VERSION} --vpc-private-subnets $(echo $SUBNETS | sed 's/ /,/g') --without-nodegroup
+eksctl create cluster --name ${MY_EKS_CLUSTER_NAME} --region ${MY_REGION} --version ${MY_EKS_VERSION} --vpc-private-subnets $(echo $SUBNETS | sed 's/ /,/g') --without-nodegroup
 ```
 
 Get the Status of the Cloudformation Stack

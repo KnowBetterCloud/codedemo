@@ -9,8 +9,8 @@ aws ec2 describe-key-pairs --region $MY_REGION --key-name $MY_PROJECT
 
 Get the EKS cluster name if not already set
 ```
-[ -z $MY_EKS_CLUSTER ]  &&  { MY_EKS_CLUSTER=$(aws eks list-clusters --query 'clusters' --output text); }
-echo "EKS Cluster: $MY_EKS_CLUSTER"
+[ -z $MY_EKS_CLUSTER_NAME ]  &&  { MY_EKS_CLUSTER_NAME=$(aws eks list-clusters --query 'clusters' --output text); }
+echo "EKS Cluster: $MY_EKS_CLUSTER_NAME"
 ```
 
 NOTE: this activity will create a Cloudformation Stack for each Managed Node Group  
@@ -20,7 +20,7 @@ Stack name: eksctl-codedemo-nodegroup-my-mng-al2 (example)
 ```
 
 eksctl create nodegroup \
-  --cluster $MY_EKS_CLUSTER \
+  --cluster $MY_EKS_CLUSTER_NAME \
   --region $MY_REGION \
   --name my-mng-al2 \
   --node-ami-family AmazonLinux2 \
@@ -42,7 +42,7 @@ kubectl get nodes -o wide
 ## Bottlerocket AMI
 ```
 eksctl create nodegroup \
-  --cluster $MY_EKS_CLUSTER \
+  --cluster $MY_EKS_CLUSTER_NAME \
   --region $MY_REGION \
   --name my-mng-bottlerocket \
   --node-ami-family Bottlerocket \
@@ -64,6 +64,6 @@ kubectl get nodes -o wide
 ## Some status reporting
 ```
 kubectl get nodes -o wide
-aws eks list-nodegroups --region $MY_REGION --cluster-name $MY_EKS_CLUSTER
-eksctl get nodegroup --region $MY_REGION --cluster $MY_EKS_CLUSTER
+aws eks list-nodegroups --region $MY_REGION --cluster-name $MY_EKS_CLUSTER_NAME
+eksctl get nodegroup --region $MY_REGION --cluster $MY_EKS_CLUSTER_NAME
 ```

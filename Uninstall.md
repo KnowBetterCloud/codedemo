@@ -39,9 +39,9 @@ NOTE:  This *may* need to be done via Console?  I.e. if I do this *before* I del
 
 ## Delete NodeGroup
 ```
-for NG in $(aws eks list-nodegroups --cluster-name $MY_EKS_CLUSTER --query "nodegroups[*]" --output text)
+for NG in $(aws eks list-nodegroups --cluster-name $MY_EKS_CLUSTER_NAME --query "nodegroups[*]" --output text)
 do 
-  aws eks delete-nodegroup --cluster $MY_EKS_CLUSTER --nodegroup-name $NG --no-page
+  aws eks delete-nodegroup --cluster $MY_EKS_CLUSTER_NAME --nodegroup-name $NG --no-page
 done
  
 for SERVICE in nodegroup
