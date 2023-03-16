@@ -27,5 +27,6 @@ aws cloudformation create-stack --stack-name "${MY_STACK_NAME}" \
 Check the status of the Cloudformation Stacks 
 NOTE: there will be many as all the stacks start with "$MY_PROJECT" (codedemo)
 ```
-aws cloudformation list-stacks --region $MY_REGION --query "StackSummaries[?starts_with(StackName, '${MY_STACK_NAME}')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"
+SLEEPYTIME=10
+while true; do aws cloudformation list-stacks --region $MY_REGION --query "StackSummaries[?starts_with(StackName, '${MY_STACK_NAME}')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"; sleep $SLEEPYTIME; done
 ```
