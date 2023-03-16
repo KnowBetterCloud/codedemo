@@ -18,7 +18,7 @@ sdiff amazon-eks-vpc-private-subnets.yaml amazon-eks-vpc-3-private-subnets.yaml
 ```
 
 ```
-MY_STACK_NAME="${MY_EKS_CLUSTER_NAME}"
+MY_STACK_NAME="${MY_EKS_CLUSTER_NAME}-VPC"
 aws cloudformation create-stack --stack-name "${MY_STACK_NAME}" \
   --template-body file://amazon-eks-vpc-3-private-subnets.yaml \
   --region ${MY_REGION}
