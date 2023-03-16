@@ -27,3 +27,8 @@ Get the Status of the Cloudformation Stack
 aws cloudformation list-stacks --region $MY_REGION --query "StackSummaries[?starts_with(StackName, 'eksctl-${MY_PROJECT}-cluster')].{StackName:StackName,StackStatus:StackStatus} | sort_by(@, &StackName)"
 ```
 
+## Troubleshooting
+Note:  you will receive a "warning" about having only 1 stack. That is expected at this point. You will create the managed node group in a future step.
+```
+eksctl utils describe-stacks --region=us-east-1 --cluster=codedemo
+```
